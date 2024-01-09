@@ -95,34 +95,7 @@ const UserProfile = () => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };
 
-  // const handleSaveChanges = async (e) => {
-  //   e.preventDefault();
-  //   if (!error) {
-  //     const updatedUser = new FormData();
-  //     updatedUser.append("user_id", user.user_id);
-  //     updatedUser.append("username", formValues.username);
-  //     updatedUser.append("email", formValues.email);
 
-  //     updatedUser.append("phone_number", formValues.phone_number); // Include hashed password
-  //     updatedUser.append("birthday", formValues.birthday); // Include hashed password
-
-  //     try {
-  //       axios.defaults.headers.common[
-  //         "Authorization"
-  //       ] = `${localStorage.getItem("token")}`;
-  //       const response = await axios.put(
-  //         `http://localhost:8000/updateuser`,
-  //         updatedUser
-  //       );
-  //       console.log("Server Response:", response.data[0]);
-  //       setSuccessMessage("Profile updated successfully!");
-  //     } catch (error) {
-  //       console.error("Error updating Information", error);
-  //       setSuccessMessage("");
-  //       setError("Error updating information. Please try again.");
-  //     }
-  //   }
-  // };
 
   const handleSaveChanges = async (e) => {
     e.preventDefault();
@@ -131,7 +104,7 @@ const UserProfile = () => {
         // console.log(updatedUser);
         axios.defaults.headers.common[
           "Authorization"
-        ] = `${localStorage.getItem("token")}`;
+        ] = `${token}`;
         const response = await axios.put(
           `http://localhost:8000/updateuser`,
           formValues
@@ -156,7 +129,7 @@ const UserProfile = () => {
       try {
         axios.defaults.headers.common[
           "Authorization"
-        ] = `${localStorage.getItem("token")}`;
+        ] = `${token}`;
         const response = await axios.put(
           `http://localhost:8000/updatedImage`,
           updatedImage
@@ -192,15 +165,14 @@ const UserProfile = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `${token}`;
+
       const response = await axios.put(
         "http://localhost:8000/updatepassword",
         { currentPassword, newPassword },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
+
       );
       console.log(response.error, "lololo");
       setSuccessMessage("Password updated successfully!");
@@ -321,7 +293,7 @@ const UserProfile = () => {
             <button
               type="button"
               className="px-4 py-2 text-center bg-red-500 hover:bg-red-600 text-white rounded-md"
-              // onClick={handleCancel}
+            // onClick={handleCancel}
             >
               Cancel
             </button>

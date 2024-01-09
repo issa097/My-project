@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert";
+import Cookies from "js-cookie";
 
 const Blogs = () => {
   const [blog, setBlog] = useState([]);
@@ -9,9 +10,8 @@ const Blogs = () => {
   console.log(blog);
   useEffect(() => {
     const fetchData = async () => {
-      axios.defaults.headers.common["Authorization"] = ` ${localStorage.getItem(
-        "token"
-      )}`;
+      axios.defaults.headers.common["Authorization"] = `${Cookies.get("Token")}`
+
       try {
         // Fetch data from your API
         const response = await axios.get("http://localhost:8000/getBlogidUser");

@@ -50,7 +50,7 @@ const LoginForm = () => {
       const user = response.data.user;
       const role = response.data.user.role;
       const token = response.data.token;
-      localStorage.setItem("token", token);
+
       Cookies.set("Token", token);
       // Cookies.set('user_id', userId);
       sessionStorage.setItem("role", role);

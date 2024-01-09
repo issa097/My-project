@@ -9,18 +9,18 @@ import Cookies from "js-cookie";
 import Blogsprofile from "./BlogsProfille";
 import WorkShopprofile from "./NewShopBooking";
 
-export const setLocalStorage = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
+// export const setLocalStorage = (key, value) => {
+//   localStorage.setItem(key, JSON.stringify(value));
+// };
 
-export const getLocalStorage = (key) => {
-  const value = localStorage.getItem(key);
-  return value ? JSON.parse(value) : null;
-};
+// export const getLocalStorage = (key) => {
+//   const value = localStorage.getItem(key);
+//   return value ? JSON.parse(value) : null;
+// };
 
-export const removeLocalStorage = (key) => {
-  localStorage.removeItem(key);
-};
+// export const removeLocalStorage = (key) => {
+//   localStorage.removeItem(key);
+// };
 
 const Side = () => {
   const [user, setUser] = useState([]);
@@ -32,21 +32,28 @@ const Side = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/user")
-      .then((response) => {
-        setUser(response.data[0]);
-        console.log("sssssssssssssssssssssssss", response.data);
-        setPhotoPreview(response.data.profile_image_name);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-        setError(error); // Set the error state
-      })
-      .finally(() => {
-        setLoading(false); // Set loading to false regardless of success or failure
-      });
+
+
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+
+    try {
+      axios.defaults.headers.common["Authorization"] = `${Cookies.get("Token")}`
+
+      const response = await axios.get("http://localhost:8000/user");
+      setUser(response.data[0]);
+      console.log("sssssssssssssssssssssssss", response.data[0]);
+      setPhotoPreview(response.data[0].user_img);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setError(error); // Set the error state
+    } finally {
+      setLoading(false); // Set loading to false regardless of success or failure
+    }
+  };
+
 
   function logout() {
     // removeLocalStorage("token");
@@ -147,7 +154,7 @@ const Side = () => {
                   className={`rounded-full w-1/4 ${user.user_img === null ? "hidden" : ""
                     } border`}
                   src={user.user_img}
-                  alt="Profile Picture"
+                // alt="Profile Picture"
                 />
 
                 <svg

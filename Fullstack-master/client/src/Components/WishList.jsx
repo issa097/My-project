@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const WishList = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -8,9 +9,8 @@ const WishList = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = ` ${localStorage.getItem("token")}`;
+        axios.defaults.headers.common["Authorization"] = `${Cookies.get("Token")}`
+
         const response = await axios.get("http://localhost:8000/getWishlist");
         setWishlist(response.data);
         console.log("Wishlist data:", response.data);

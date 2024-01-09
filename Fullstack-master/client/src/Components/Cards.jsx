@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert";
 import StarRating from "./StarRating";
+import Cookies from "js-cookie";
 
 function Cards() {
   const [products, setProducts] = useState([]);
@@ -26,9 +27,8 @@ function Cards() {
   }, []);
   const handleAddToCart = async (product_id) => {
     // const count = quantity;
-    axios.defaults.headers.common["Authorization"] = ` ${localStorage.getItem(
-      "token"
-    )}`;
+    axios.defaults.headers.common["Authorization"] = `${Cookies.get("Token")}`
+
 
     await axios
       .post(`http://localhost:8000/items`, {
@@ -71,9 +71,8 @@ function Cards() {
     );
 
     if (selectedProduct) {
-      axios.defaults.headers.common["Authorization"] = ` ${localStorage.getItem(
-        "token"
-      )}`;
+      axios.defaults.headers.common["Authorization"] = `${Cookies.get("Token")}`
+
       axios
         .post("http://localhost:8000/AddWishlist", { product_id: productId })
         .then((response) => {

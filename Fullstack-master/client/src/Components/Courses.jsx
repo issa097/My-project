@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiAlertCircle } from "react-icons/fi";
 import Swal from "sweetalert";
+import Cookies from "js-cookie";
 
 const CustomPrevArrow = (props) => (
   <div
@@ -70,9 +71,8 @@ function Courses() {
     const token = localStorage.getItem("token"); // Replace with your actual token key
     console.log("fffffffffffffffff", token);
     try {
-      axios.defaults.headers.common["Authorization"] = `${localStorage.getItem(
-        "token"
-      )}`;
+      axios.defaults.headers.common["Authorization"] = `${Cookies.get("Token")}`
+
       // Send a request to your server to validate the token
       const response = await axios.post(
         "http://localhost:8000/Newworkshop_bookings",
@@ -264,48 +264,49 @@ function Courses() {
                 <p className="mb-3 text-sm text-gray-700 dark:text-gray-400">
                   {workshop.workshop_end}
                 </p>
-                {localStorage.getItem("token") ? (
-                  <button
-                    onClick={() => handleConfirmClick(workshop.workshop_id)}
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#C08261]"
-                  >
-                    Save a seat
-                    <svg
-                      className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 14 10"
+                {Cookies.get("Token")
+                  ? (
+                    <button
+                      onClick={() => handleConfirmClick(workshop.workshop_id)}
+                      className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#C08261]"
                     >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9"
-                      />
-                    </svg>
-                  </button>
-                ) : (
-                  <a
-                    href="#"
-                    onClick={() => handleReadMoreClick(workshop)}
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#C08261]"
-                  >
-                    Log in to save a seat
-                    <svg
-                      className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 14 10"
+                      Save a seat
+                      <svg
+                        className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </button>
+                  ) : (
+                    <a
+                      href="#"
+                      onClick={() => handleReadMoreClick(workshop)}
+                      className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#C08261]"
                     >
-                      path stroke="currentColor" strokeLinecap="round"
-                      strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9
-                      1m4 4L9 9"
-                    </svg>
-                  </a>
-                )}
+                      Log in to save a seat
+                      <svg
+                        className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        path stroke="currentColor" strokeLinecap="round"
+                        strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9
+                        1m4 4L9 9"
+                      </svg>
+                    </a>
+                  )}
               </div>
             </div>
           </div>
